@@ -1,0 +1,23 @@
+body {
+    font: 30px "Century Gothic", Futura, sans-serif;
+    color: white;
+    margin: 0px;
+    height: 100%;
+    /* background-color: aqua; */
+    background-image: url("MountainNight.jpg");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Emilys Candy', cursive;
+/* font-family: 'Lemon', cursive; */
+/* font-family: 'Lobster', cursive; */
+  }
+
+  .signin {
+color: black
+  }
+
+  .table {
+      font-family: 'Lobster', cursive;
+  }

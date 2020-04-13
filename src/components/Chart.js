@@ -88,7 +88,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
     { id: 'hikeDate', numeric: true, disablePadding: false, label: 'Date' },
-    { id: 'hikeName', numeric: true, disablePadding: false, label: 'Trail Name' },
+    { id: 'hikeName', numeric: false, disablePadding: false, label: 'Trail Name' },
     { id: 'totalMiles', numeric: true, disablePadding: false, label: 'Total Miles' },
     { id: 'elevationGain', numeric: true, disablePadding: false, label: 'Elevation Gained' },
     { id: 'peakElevation', numeric: true, disablePadding: false, label: 'Peak Elevation' },
@@ -402,6 +402,4 @@ export default function EnhancedTable() {
         </div>
     );
 }
-
-
 

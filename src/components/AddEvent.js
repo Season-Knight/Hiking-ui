@@ -6,6 +6,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { uriBase, api } from '../const'
 import { setDate } from 'date-fns';
+import { format } from 'date-fns';
+// import { formatISO9075 } from 'date-fns'
 
 function getModalStyle() {
   const top = 50;
@@ -77,7 +79,7 @@ export default function SimpleModal(props) {
 
   const onSaveHandler = (event) => {
     event.preventDefault()
-
+    // const newTime = formatISO9075(new Date(time), {representation: 'time'})
 
     let formData = new FormData()
     formData.append("date", date)
@@ -122,11 +124,11 @@ export default function SimpleModal(props) {
 
 
   return (
-    <div>
+    <div style={{float: 'left'}}>
       <Tooltip title="Add new event">
 
-        <IconButton aria-label="Add new event" onClick={handleOpen}>
-          <AddCircleIcon />
+        <IconButton position="left" aria-label="Add new event" onClick={handleOpen}>
+          <AddCircleIcon position="left"></AddCircleIcon>
         </IconButton>
       </Tooltip>
       <Modal

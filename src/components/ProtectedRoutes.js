@@ -9,7 +9,7 @@ export default function ProtectedRoutes({ component: Component, ...rest }) {
                 return (
                     <Route
                         render={props =>
-                            loggedIn ? <Component {...props} /> : <Redirect to="/" />
+                            loggedIn ? <Component {...props} /> : <Redirect to="/ProfilePage" />
                         }
                         {...rest}
                     />

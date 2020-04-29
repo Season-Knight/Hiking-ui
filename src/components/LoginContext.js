@@ -2,17 +2,20 @@ import React, {useState, useEffect}from 'react'
 import { uriBase, api } from '../const';
 
 ///context wil have a provider and consumer
-const LoginContext = React.createContext()
+const LoginContext = React.createContext({})
 
  function LoginProvider(props) {
 
     const [loggedIn, setLoggedIn] = useState(false)
+    const [userId, setUserId] = useState("")
     const [token, setToken] = useState("")
+    
 
 
     const writeToken= (token)=> {
         //todo
        window.localStorage.setItem('token', token)
+      console.log("Context token", token)
         //Persist token to local storage
         setToken(token)
     }
@@ -35,11 +38,13 @@ const LoginContext = React.createContext()
             
             if (response.hasOwnProperty("token")) {
                 setLoggedIn(true)
+                setUserId(response.userId)
                 writeToken(response.token)
                 
                 // props.history.push('/users')
             } else {
                 setLoggedIn(false)
+                setUserId("")
                 writeToken("")
                 
             }
@@ -49,11 +54,12 @@ const LoginContext = React.createContext()
         })
     }
     useEffect(() =>{
+        console.log('useEffect LoginContext')
         verifyToken()
-    })
+    },[])
 
     return (
-        <LoginContext.Provider value ={{loggedIn, setLoggedIn, token, writeToken}}>
+        <LoginContext.Provider value ={{loggedIn, setLoggedIn, userId, setUserId, token, writeToken}}>
             {props.children}
         </LoginContext.Provider>
     )

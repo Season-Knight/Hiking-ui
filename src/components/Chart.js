@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -17,14 +17,16 @@ import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddModal from './AddModal'
-import EditModal from './EditModal'
+import AddHike from './AddHike'
+import EditModal from './EditHike'
 import { uriBase, api } from '../const'
 import './Mainpage.css'
 import { Link as RLink } from 'react-router-dom'
 import TableFooter from '@material-ui/core/TableFooter';
 import { withStyles } from '@material-ui/core/styles';
 import Rating from '@material-ui/lab/Rating';
+import {LoginContext} from './LoginContext'
+
 
 
 
@@ -171,8 +173,9 @@ const useToolbarStyles = makeStyles(theme => ({
     }
 }));
 
-const EnhancedTableToolbar = props => {
+const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
+
     return (
         <Toolbar>
 
@@ -181,7 +184,7 @@ const EnhancedTableToolbar = props => {
                 Hike Tracker
         </Typography>
 
-            <AddModal ></AddModal>
+            <AddHike refresh={props.refresh}></AddHike>
         </Toolbar>
     );
 };
@@ -218,7 +221,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
 export default function EnhancedTable() {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
@@ -228,7 +230,7 @@ export default function EnhancedTable() {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [hikes, setHikes] = React.useState({gridHikes:[],dbHikes:[]});
-    
+    let {userId, setUserId} = useContext(LoginContext)
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -278,7 +280,7 @@ export default function EnhancedTable() {
 
     const refresh = () => {
 
-        fetch(`${uriBase}${api}/hikes`, {
+        fetch(`${uriBase}${api}/hikes/userhikes/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -291,11 +293,12 @@ export default function EnhancedTable() {
                 return HttpResponse.json()
             })
             .then(response => {
+                console.log(userId)
                 console.log(response)
                 console.log(response.length)
                 setHikes({gridHikes:db2tablerows(response),dbHikes:response})
                 
-                console.log(hikes.length)
+                console.log(hikes.length)//undefined?
 
             })
             .catch(error => {
@@ -313,7 +316,7 @@ export default function EnhancedTable() {
 
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <EnhancedTableToolbar refresh={refresh} numSelected={selected.length} />
                     <TableContainer>
                         <Table
                             className={classes.table}
@@ -396,8 +399,15 @@ export default function EnhancedTable() {
                 />
                 <RLink to="/Calendar"
                     style={{
-                        color: "yellowgreen"
-                    }}>My Calendar!></RLink>
+                        color: "yellowgreen",
+                        fontSize: 20
+                    }}>Calendar!</RLink>
+
+                    <RLink to="/ProfilePage"
+                    style={{
+                        color: "aqua",
+                        fontSize: 20
+                    }}>ProfilePage</RLink>
             </div>
         </div>
     );

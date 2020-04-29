@@ -1,9 +1,11 @@
 //example of function
-import React from 'react'
+import React, {useContext} from 'react'
 import {Link} from 'react-router-dom'
 // import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import {uriBase, api} from '../const'
+import {LoginContext} from './LoginContext'
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,7 +28,8 @@ export default function SignUp (props){
     let [lName, setlName] = React.useState("")
     let [userName, setUserName] = React.useState("")
     let [password, setPassword] = React.useState("")
-    const [email, setEmail] = React.useState("")
+    let [email, setEmail] = React.useState("")
+    let {userId, setUserId} = useContext(LoginContext)
     
     const onClickHandler = (event) => {
         event.preventDefault()
@@ -36,9 +39,10 @@ export default function SignUp (props){
         formData.append("email", email)
         formData.append("userName", userName)
         formData.append("password", password)
-            for(var key of formData.entries() ){
-                console.log(key[0] + ", " + key[1])
-            }
+        formData.append("numberGoal", 0)
+        formData.append("milesGoal", 0)
+        formData.append("elevationGoal", 0)
+           
             
 
         fetch(`${uriBase}${api}/users/signup`,{
@@ -53,7 +57,9 @@ export default function SignUp (props){
         })
         .then(user => {
             //ToDo Handle User
+            setUserId(user._id)
             setMessage("Welcome!")
+            props.history.push("/Mainpage") //redirect
         })
         .catch(error => {
             console.log(error)
@@ -99,9 +105,8 @@ export default function SignUp (props){
             </div>
             </form>
             <div>
-            <Link to="login">Back to Login </Link><br></br>
-            <Link to="Tracker">Track Your Hikes</Link><br></br>
-            <Link to="Calendar">Calendar</Link>
+            <Link to="Mainpage">Back to Login </Link><br></br>
+           
             </div>
         </div>
     )

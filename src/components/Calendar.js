@@ -13,7 +13,7 @@ import subMonths from "date-fns/subMonths"
 import '../components/assets/Calendar.css'
 import { Link as RLink } from 'react-router-dom'
 import { uriBase, api } from '../const'
-import EventModal from './EventModal'
+import EventModal from './AddEvent'
 import { CalendarContext } from './CalendarContext'
 import Events from './Events'
 import EditEvents from './EditEvent'
@@ -220,7 +220,9 @@ export default function Calendar() {
       <div>{header()} </div>
       <div>{days()} </div>
       <div>{cells()}
-
+      </div>
+      <div>
+      <RLink to="/Chart">Track Your Hikes Here!</RLink><br></br>
       </div>
     </div>
 

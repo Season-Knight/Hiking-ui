@@ -7,6 +7,7 @@ import { uriBase, api } from '../const'
 import EditIcon from '@material-ui/icons/Edit';
 import objectId from 'bson-objectid'
 import Events from './Events'
+import Button from '@material-ui/core/Button';
 
 
 function getModalStyle() {
@@ -159,7 +160,7 @@ export default function EditEvent(props) {
     return (
         <div>
             
-                <button onClick={handleOpen}>{`${props.event.time} ${props.event.eventTitle}`}</button>
+                <Button variant="outlined" size="small" color="primary" onClick={handleOpen}>{`${props.event.time} ${props.event.eventTitle}`}</Button>
            
             <Modal
                 aria-labelledby="simple-modal-title"
@@ -179,9 +180,10 @@ export default function EditEvent(props) {
                     </div>
 
                     <div >
-                        <button onClick={onSaveHandler}>Update Event</button><br></br>
-                        <button onClick={onDeleteClickHandler}>Delete Event</button>
-                        <button onClick={handleClose}>Close</button>
+                        <br></br>
+                        <Button variant="outlined" size="small" color="secondary" onClick={onSaveHandler}>Update Event</Button><br></br>
+                        <Button variant="outlined" size="small"color="primary" onClick={onDeleteClickHandler}>Delete Event</Button><br></br>
+                        <Button variant="outlined" size="small" color="secondary" onClick={handleClose}>Close</Button>
                         <h4>{message}</h4>
                     </div>
 

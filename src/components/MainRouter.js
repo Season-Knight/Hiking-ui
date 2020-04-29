@@ -1,6 +1,5 @@
 import React from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-// import Tracker from './TrackerForm'
 import MyBlog from './MyBlog'
 import Mainpage from './Mainpage'
 import Chart from './Chart'
@@ -10,8 +9,9 @@ import {LoginProvider} from './LoginContext'
 import {CalendarProvider} from './CalendarContext'
 import ProtectedRoutes from './ProtectedRoutes'
 import GoalGraph from './GoalGraph'
+import ProfilePage from './ProfilePage'
 // import UsersF from './UsersF'
-// import Tokenator from './Tokenator'
+
 
 export default function MainRouter(){
 
@@ -22,18 +22,20 @@ export default function MainRouter(){
                    <CalendarProvider>
                 <Switch>
 
-                <Route path="/Chart" component={Chart} initialMessage="Track Your Hikes Here ;)"></Route> 
+    <ProtectedRoutes path="/Chart" render={(props) => <Chart {...props} initialMessage="Track Your Hikes Here ;)" />}></ProtectedRoutes> 
                         
                     <Route path= "/MyBlog">
                             <MyBlog></MyBlog>
                         </Route>
                         <Route path= "/SignUp" render ={(props) => <SignUp initialMessage ="Sign Up!" {...props}></SignUp> }>
                            
-                        </Route>  
+                        </Route> 
+                        <Route path="/GoalGraph" component={GoalGraph} initialMessage="Goal Graph"></Route> 
                         {/* <ProtectedRoutes path ="/users" component = {UsersF}></ProtectedRoutes> */}
-                        <Route path= "/Calendar" component = {Calendar}></Route>       
+                        <Route path= "/Calendar" component = {Calendar}></Route> 
+                        <ProtectedRoutes path= "/ProfilePage" component = {ProfilePage}></ProtectedRoutes>      
                         <Route path="/" component= {Mainpage} initialMessage="Welcome Adventurer!"></Route>
-                        <Route path="/GoalGraph" component={GoalGraph} initialMessage="Goal Graph"></Route>
+                       
                        
                 </Switch>
                 </CalendarProvider>

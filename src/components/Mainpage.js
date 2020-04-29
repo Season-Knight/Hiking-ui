@@ -1,7 +1,7 @@
 //example of function
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect,  } from 'react'
 import './Mainpage.css'
-import { Link as RLink } from 'react-router-dom'
+import { Link as RLink, useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles';
 import { uriBase, api } from '../const';
@@ -13,6 +13,7 @@ import queryString from 'query-string';
 import teal from '@material-ui/core/colors/teal';
 
 const primary = teal[500];
+
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -27,15 +28,17 @@ export default function MainPage(props) {
     // const [loggedInMsg, setLoggedInMsg] = useState("The Mountains are Calling")
     const [email, setEmail] = useState("")
 
-    const { loggedIn, setLoggedIn, token, writeToken } = useContext(LoginContext)
-    const onClickHandler = () => {
+    const { loggedIn, setLoggedIn, userId, setUserId, token, writeToken } = useContext(LoginContext)
+    const onClickHandler = (event) => {
+        event.preventDefault()
+        setLoggedIn(!loggedIn)
         
 
         let body = {
-            email,
-            password,
+            email: email,
+            password: password
         }
-        fetch(`${uriBase}${api}/users`, {
+        fetch(`${uriBase}${api}/users/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -53,7 +56,10 @@ export default function MainPage(props) {
 
                 if (response.hasOwnProperty("token")) {
                     setLoggedIn(true)
-                    writeToken(token)
+                    writeToken(response.token)
+                    setUserId(response.userId)
+                    
+                    props.history.push("/ProfilePage")
                     // setLoggedInMsg("Going to the Top!")
                 } else {
                     setLoggedIn(false)
@@ -62,20 +68,12 @@ export default function MainPage(props) {
                 }
             })
 
-            //     if (token.hasOwnProperty("fName")){
-            //         this.setState({loggedIn: "Woohoo its go time!"})
-            //     } else {
-            //         this.setState({loggedIn: "Are you lost?"})
-            //     }
-            // })
+           
             .catch(error => {
                 console.log(error)
             })
     }
-    // onChangeHandler =(event) =>{
-    //     this.setState({[event.target.name]: event.target.value})
-    //     console.log(this.state)
-    // }
+  
 
     const getLogin = () => {
         window.location.href = `${uriBase}/API/v1/users/auth/googlelogin`
@@ -86,9 +84,9 @@ export default function MainPage(props) {
         if (Object.keys(parsed.query).length > 0) {
             let query = {...parsed.query}
             if (query.hasOwnProperty("token")) {
-               console.log("TOKEN", parsed.query.token)
+               console.log("TOKEN", parsed.query.token, userId)
                verifyToken(query.token)
-                //props.history.push('/chart')
+                // props.history.push('/ProfilePage')
             }
         }
     }
@@ -112,8 +110,10 @@ export default function MainPage(props) {
             if (response.hasOwnProperty("token")) {
                 setLoggedIn(true)
                 writeToken(response.token)
+                setUserId(response.userId)
+                console.log(response.userId)
                 // setLoggedInMsg("Going to the Top!")
-                props.history.push('/users')
+                props.history.push('/ProfilePage')
             } else {
                 setLoggedIn(false)
                 writeToken("")
@@ -126,6 +126,7 @@ export default function MainPage(props) {
     }
 
     useEffect(() => {
+        console.log('useEffect MainPage')
         isLoggedIn()
     }, [])
 
@@ -157,16 +158,16 @@ export default function MainPage(props) {
                 >Sign Up</Button>
                 <br></br>
                 <br></br>
-                <Button 
+                <button 
                 variant="contained"
                 color="primary"
-                onClick={getLogin}><img scr={`${uriBase}/images/btn_google_signin_light_focus_web@2x.png`} alt="Google Login" /></Button><br></br>
+                onClick={getLogin}><img scr={`${uriBase}/images/btn_google_signin_light_focus_web@2x.png`} alt="Google Login" /></button><br></br>
                 <br></br>
-                <RLink to="/Chart">Track Your Hikes Here!</RLink><br></br>
+               
                 <br></br>
-                <RLink to="/MyBlog">My Summit Blog!</RLink><br></br>
+               
                 <br></br>
-                <RLink to="/GoalGraph">Goal Graph</RLink>
+                
                 {/* <Link to="/Calendar">Calendar</Link> */}
 
             </div>
